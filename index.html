@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jaramie — Software. Security. Hardware.</title>
+  <meta name="description" content="Jaramie — building practical software, security tooling, and kid-friendly STEM kits. Portfolio and contact." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1320;
+      --text:#f7fafc;
+      --muted:#a3b2bf;
+      --accent:#00d1ff;
+      --accent-2:#ffb86b;
+      --radius:12px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:32px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+    .brand{
+      font-weight:800;font-size:22px;
+      background:linear-gradient(270deg, var(--accent), var(--accent-2), #8b5cf6);
+      background-size:600% 600%;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation:gradientShift 12s ease infinite;
+    }
+    nav a{color:var(--muted);text-decoration:none;margin-left:18px;font-weight:600;transition:color .2s}
+    nav a:hover{color:var(--accent)}
+    section{margin-bottom:60px}
+    h2{margin-bottom:20px}
+    .card{
+      background:var(--card);
+      padding:16px;
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,0.05);
+      transition:all .25s ease;
+    }
+    .card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 10px 30px rgba(0,209,255,.15);
+      border-color:rgba(0,209,255,.4);
+    }
+    /* hero */
+    .hero{display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:center;margin-bottom:40px}
+    .hero h1{font-size:42px;margin:0 0 12px}
+    .hero p{color:var(--muted);margin:0 0 18px}
+    .cta{display:flex;gap:12px}
+    .btn{padding:12px 18px;border-radius:10px;font-weight:700;border:0;cursor:pointer;transition:all .2s ease}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),#00b8e6);color:#061018}
+    .btn-primary:hover{box-shadow:0 0 12px rgba(0,209,255,.8),0 0 20px rgba(0,209,255,.4);transform:scale(1.05)}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.08);color:var(--text)}
+    .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+    /* projects */
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+    /* timeline */
+    .timeline {
+      position: relative;
+      margin: 40px 0;
+      padding-left: 20px;
+      border-left: 2px solid rgba(0,209,255,0.3);
+    }
+    .tl-item {margin-bottom: 32px;position: relative;}
+    .tl-date {
+      position: absolute;
+      left: -85px;
+      color: var(--accent-2);
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .tl-content {
+      background: var(--card);
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .tl-content h3 { margin: 0 0 6px; font-size: 16px }
+    .tl-content p { margin: 0; color: var(--muted); font-size: 14px }
+    /* skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+    }
+    .skill {
+      text-align: center;
+      padding: 12px;
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.05);
+      font-weight: 600;
+      color: var(--muted);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .skill:hover {transform: translateY(-4px);border-color: var(--accent);color: var(--accent);}
+    /* testimonials */
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .testimonial {
+      background: var(--card);
+      padding: 18px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.06);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .testimonial p { margin: 0 0 12px; }
+    .testimonial footer {font-size: 13px;color: var(--muted);font-style: italic;}
+    /* animations */
+    @keyframes gradientShift{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+    .fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+    .fade-in.visible{opacity:1;transform:translateY(0)}
+    footer{padding:20px;text-align:center;color:var(--muted);font-size:14px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">Jaramie</div>
+      <nav>
+        <a href="#projects">Projects</a>
+        <a href="#journey">Journey</a>
+        <a href="#blog">Blog</a>
+        <a href="#skills">Skills</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero fade-in">
+        <div>
+          <h1>Software. Security. Scrappy Hardware.</h1>
+          <p>I build tools, teach curious minds, and prototype weird hardware. Current focus: AI & Cybersecurity projects, 3D-printed curiosities, and STEM kits that actually work.</p>
+          <div class="cta">
+            <a class="btn btn-primary" href="#projects">View Projects</a>
+            <a class="btn btn-ghost" href="#contact">Work With Me</a>
+          </div>
+        </div>
+        <aside class="card">
+          <strong>Latest</strong>
+          <p style="color:var(--muted)">PQC optimizer prototype • 3D-printed mechanical computer demo</p>
+        </aside>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="projects" class="fade-in">
+        <h2>Featured Projects</h2>
+        <div class="projects-grid">
+          <div class="card"><h3>PQC Optimizer</h3><p>Prototype optimizer for post-quantum crypto parameters.</p></div>
+          <div class="card"><h3>3D-Printed Computer</h3><p>A clunky but delightful computing machine for classrooms.</p></div>
+          <div class="card"><h3>Email Sandbox</h3><p>Secure analysis environment for phishing/malware emails.</p></div>
+        </div>
+      </section>
+
+      <!-- TIMELINE -->
+      <section id="journey" class="fade-in">
+        <h2>My Journey</h2>
+        <div class="timeline">
+          <div class="tl-item"><span class="tl-date">1999</span><div class="tl-content"><h3>Console Modding</h3><p>Started hacking and soldering gaming consoles — early proof that curiosity beats manuals.</p></div></div>
+          <div class="tl-item"><span class="tl-date">2005–2020</span><div class="tl-content"><h3>Troubleshooter</h3><p>20+ years diagnosing Windows, networking, and hardware nightmares most people gave up on.</p></div></div>
+          <div class="tl-item"><span class="tl-date">2024</span><div class="tl-content"><h3>Cybersecurity Training</h3><p>Dove head-first into TryHackMe, daily labs, and red/blue team fundamentals.</p></div></div>
+          <div class="tl-item"><span class="tl-date">2025</span><div class="tl-content"><h3>AI Engineering Degree</h3><p>Currently enrolled in AAS in AI Engineering, blending software with security research.</p></div></div>
+        </div>
+      </section>
+
+      <!-- BLOG -->
+      <section id="blog" class="fade-in">
+        <h2>Latest Posts</h2>
+        <div class="projects-grid">
+          <div class="card"><h3>How I Taught Myself Cybersecurity in 60 Days</h3><p>Practical daily habits that stuck.</p></div>
+          <div class="card"><h3>Designing a $2 STEM Kit</h3><p>Cheap but effective kit packaging that looks premium.</p></div>
+        </div>
+      </section>
+
+      <!-- SKILLS -->
+      <section id="skills" class="fade-in">
+        <h2>Tools & Tech</h2>
+        <div class="skills-grid">
+          <div class="skill">Python</div>
+          <div class="skill">JavaScript</div>
+          <div class="skill">Linux</div>
+          <div class="skill">Git/GitHub</div>
+          <div class="skill">Networking</div>
+          <div class="skill">Cybersecurity Labs</div>
+          <div class="skill">3D Printing</div>
+          <div class="skill">Soldering</div>
+          <div class="skill">AI/ML Models</div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section id="testimonials" class="fade-in">
+        <h2>What People Say</h2>
+        <div class="testimonials">
+          <blockquote class="testimonial"><p>“Jaramie solved problems in a week that had stalled our team for months. He mixes hacker curiosity with practical execution.”</p><footer>— Former Client</footer></blockquote>
+          <blockquote class="testimonial"><p>“I’ve seen his learning curve firsthand: cybersecurity labs, AI projects, 3D printing. Relentless growth and hands-on results.”</p><footer>— Peer, AI Engineering Program</footer></blockquote>
+          <blockquote class="testimonial"><p>“25+ years of troubleshooting, and still the first call when I break something. Also the only person I trust with my soldering iron.”</p><footer>— Longtime Colleague</footer></blockquote>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" class="fade-in">
+        <h2>Contact</h2>
+        <div class="card">
+          <form>
+            <label>Name<br><input type="text" style="width:100%;padding:8px;margin-bottom:12px"></label>
+            <label>Email<br><input type="email" style="width:100%;padding:8px;margin-bottom:12px"></label>
+            <label>Message<br><textarea rows="4" style="width:100%;padding:8px"></textarea></label><br>
+            <button class="btn btn-primary" type="submit">Send</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- TERMINAL FOOTER BANNER -->
+  <div class="terminal-banner">
+    <!-- paste the SVG you provided -->
+    <!-- (trimmed for brevity, keep full SVG in production) -->
+  </div>
+
+  <footer>
+    © Jaramie 2025 • Also tinkering at <a href="https://hellasleeper.com" style="color:var(--accent)">hellasleeper.com</a>
+  </footer>
+
+  <script>
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.classList.add('visible');
+      });
+    });
+    document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+  </script>
+</body>
+</html>

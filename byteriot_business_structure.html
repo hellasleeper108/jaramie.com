@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteRiot Business Plan Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23, #1a1a2e);
+            color: #ffffff;
+            overflow-x: auto;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            background: linear-gradient(45deg, #00d4ff, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #00d4ff;
+            border-bottom: 2px solid #00d4ff;
+            padding-bottom: 10px;
+        }
+        
+        .llc-structure {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .parent-llc {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+        
+        .brand-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .brand {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .brand:hover {
+            transform: translateY(-5px);
+        }
+        
+        .sub-brands {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .sub-brand {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.9em;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #00d4ff, #ff6b9d);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            width: 45%;
+        }
+        
+        .timeline-item:nth-child(even) {
+            margin-left: 55%;
+        }
+        
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #00d4ff;
+            border-radius: 50%;
+            top: 20px;
+        }
+        
+        .timeline-item:nth-child(odd)::before {
+            right: -60px;
+        }
+        
+        .timeline-item:nth-child(even)::before {
+            left: -60px;
+        }
+        
+        .priority-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .priority-item {
+            background: linear-gradient(135deg, #ff6b9d, #feca57);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .priority-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.4);
+        }
+        
+        .budget-chart {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .budget-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 5px solid #00d4ff;
+        }
+        
+        .budget-amount {
+            font-size: 2em;
+            font-weight: bold;
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+        
+        .pitch-section {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .pitch-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .highlight {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .highlight-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #feca57;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                width: calc(100% - 50px);
+                margin-left: 50px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                margin-left: 50px;
+            }
+            
+            .timeline-item:nth-child(odd)::before,
+            .timeline-item:nth-child(even)::before {
+                left: -40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ByteRiot Business Structure & Growth Plan</h1>
+        
+        <!-- LLC Structure -->
+        <div class="section">
+            <h2>🏢 Legal Structure & Brand Architecture</h2>
+            <div class="llc-structure">
+                <div class="parent-llc">
+                    TechTonic LLC
+                    <div style="font-size: 0.8em; margin-top: 10px; opacity: 0.9;">
+                        Overarching Legal Entity
+                    </div>
+                </div>
+                
+                <div class="brand-container">
+                    <div class="brand">
+                        <h3>ByteRiot</h3>
+                        <p style="margin-top: 10px; font-size: 0.9em;">Flagship Brand & Core Identity</p>
+                    </div>
+                </div>
+                
+                <div class="sub-brands">
+                    <div class="sub-brand">
+                        <strong>ByteRiot Repairs</strong>
+                        <br>Computer & Tech Support
+                    </div>
+                    <div class="sub-brand">
+                        <strong>ByteRiot Live</strong>
+                        <br>Streaming & Community
+                    </div>
+                    <div class="sub-brand">
+                        <strong>STEM Sparks by ByteRiot</strong>
+                        <br>Educational Kits
+                    </div>
+                    <div class="sub-brand">
+                        <strong>ByteRiot Cyber</strong>
+                        <br>Cybersecurity Services
+                    </div>
+                    <div class="sub-brand">
+                        <strong>ByteRiot Academy</strong>
+                        <br>Educational Content
+                    </div>
+                    <div class="sub-brand">
+                        <strong>ByteRiot AI</strong>
+                        <br>Innovation & SaaS
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Two Year Plan -->
+        <div class="section">
+            <h2>📅 Two-Year Growth Timeline</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Months 1-3: Foundation</h3>
+                        <ul style="margin-top: 15px; line-height: 1.8;">
+                            <li>Form TechTonic LLC & ByteRiot DBA</li>
+                            <li>Launch ByteRiot Repairs with existing clients</li>
+                            <li>Start ByteRiot Live streaming (3x/week)</li>
+                            <li>Develop first STEM Sparks prototype</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Months 4-6: Content & Products</h3>
+                        <ul style="margin-top: 15px; line-height: 1.8;">
+                            <li>Launch STEM Sparks Kit #1</li>
+                            <li>Build community of 500+ followers</li>
+                            <li>Create first ByteRiot Academy courses</li>
+                            <li>Achieve $2K monthly recurring revenue</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Months 7-12: Service Expansion</h3>
+                        <ul style="margin-top: 15px; line-height: 1.8;">
+                            <li>Begin cybersecurity certification</li>
+                            <li>Launch 3 STEM Sparks kits</li>
+                            <li>Reach 1,000+ community members</li>
+                            <li>Target $5K monthly revenue</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Year 2: Scale & Innovation</h3>
+                        <ul style="margin-top: 15px; line-height: 1.8;">
+                            <li>Launch ByteRiot Cyber services</li>
+                            <li>Develop first AI/SaaS tool</li>
+                            <li>Establish educational partnerships</li>
+                            <li>Target $10K+ monthly revenue</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Today's Priorities -->
+        <div class="section">
+            <h2>🎯 Immediate Action Items (Today)</h2>
+            <div class="priority-grid">
+                <div class="priority-item">
+                    <h3>Legal Setup</h3>
+                    <p>File TechTonic LLC formation and ByteRiot DBA registration</p>
+                </div>
+                
+                <div class="priority-item">
+                    <h3>Branding Assets</h3>
+                    <p>Finalize logo, secure ByteRiot.ai domain, create business cards</p>
+                </div>
+                
+                <div class="priority-item">
+                    <h3>Equipment Audit</h3>
+                    <p>List current tools, identify essential upgrades needed</p>
+                </div>
+                
+                <div class="priority-item">
+                    <h3>Content Calendar</h3>
+                    <p>Plan first month of ByteRiot Live streaming schedule</p>
+                </div>
+                
+                <div class="priority-item">
+                    <h3>Financial Foundation</h3>
+                    <p>Open business bank account, set up basic accounting system</p>
+                </div>
+                
+                <div class="priority-item">
+                    <h3>First STEM Kit</h3>
+                    <p>Design and prototype your first educational kit concept</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Budget Breakdown -->
+        <div class="section">
+            <h2>💰 $3,000 Capital Budget Allocation</h2>
+            <div class="budget-chart">
+                <div class="budget-item">
+                    <div class="budget-amount">$600</div>
+                    <h4>Legal & Admin</h4>
+                    <p>LLC formation, DBA registration, business license, insurance</p>
+                </div>
+                
+                <div class="budget-item">
+                    <div class="budget-amount">$500</div>
+                    <h4>Equipment Upgrades</h4>
+                    <p>Essential repair tools, streaming equipment, 3D printer filament</p>
+                </div>
+                
+                <div class="budget-item">
+                    <div class="budget-amount">$400</div>
+                    <h4>Marketing & Branding</h4>
+                    <p>Website development, business cards, initial advertising spend</p>
+                </div>
+                
+                <div class="budget-item">
+                    <div class="budget-amount">$300</div>
+                    <h4>STEM Kit Prototyping</h4>
+                    <p>Components, packaging, initial inventory for first kit</p>
+                </div>
+                
+                <div class="budget-item">
+                    <div class="budget-amount">$400</div>
+                    <h4>Software & Services</h4>
+                    <p>Accounting software, domain renewals, cloud services, streaming tools</p>
+                </div>
+                
+                <div class="budget-item">
+                    <div class="budget-amount">$800</div>
+                    <h4>Operating Buffer</h4>
+                    <p>Working capital for unexpected expenses and opportunities</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Loan Pitch -->
+        <div class="section">
+            <div class="pitch-section">
+                <h2 style="color: white; border: none;">💼 Entre Capital Loan Application Pitch</h2>
+                <p style="font-size: 1.2em; margin: 20px 0; line-height: 1.6;">
+                    ByteRiot represents a strategic opportunity to transform existing technical expertise into a scalable, multi-revenue-stream technology business. With proven demand through existing clients and a clear path to diversification, we're seeking $3,000 in seed funding to formalize operations and accelerate growth.
+                </p>
+                
+                <div class="pitch-highlights">
+                    <div class="highlight">
+                        <div class="highlight-number">✅</div>
+                        <h4>Proven Demand</h4>
+                        <p>Existing client base with positive reviews and repeat business</p>
+                    </div>
+                    
+                    <div class="highlight">
+                        <div class="highlight-number">📈</div>
+                        <h4>Multi-Revenue Streams</h4>
+                        <p>Services, products, content, and education creating stability</p>
+                    </div>
+                    
+                    <div class="highlight">
+                        <div class="highlight-number">🎯</div>
+                        <h4>Clear Milestones</h4>
+                        <p>Achievable 6-month targets with measurable ROI indicators</p>
+                    </div>
+                    
+                    <div class="highlight">
+                        <div class="highlight-number">💡</div>
+                        <h4>Innovation Ready</h4>
+                        <p>Positioned for emerging tech trends (AI, STEM education, cybersecurity)</p>
+                    </div>
+                    
+                    <div class="highlight">
+                        <div class="highlight-number">🔧</div>
+                        <h4>Low Risk</h4>
+                        <p>Building on existing skills with minimal overhead and maximum flexibility</p>
+                    </div>
+                    
+                    <div class="highlight">
+                        <div class="highlight-number">🚀</div>
+                        <h4>Scalable Model</h4>
+                        <p>Each branch can grow independently while strengthening the core brand</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; padding: 20px; background: rgba(255, 255, 255, 0.1); border-radius: 10px;">
+                    <h3>Financial Projections</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-top: 15px;">
+                        <div>
+                            <strong>Month 6:</strong><br>
+                            $2,000/month revenue
+                        </div>
+                        <div>
+                            <strong>Month 12:</strong><br>
+                            $5,000/month revenue
+                        </div>
+                        <div>
+                            <strong>Month 18:</strong><br>
+                            $8,000/month revenue
+                        </div>
+                        <div>
+                            <strong>Year 2:</strong><br>
+                            $10,000+/month revenue
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

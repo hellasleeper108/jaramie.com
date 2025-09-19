@@ -1,0 +1,411 @@
+# =====================================================
+# .htaccess Configuration for Cybersecurity Portfolio
+# =====================================================
+# Place this file in your website's root directory
+# Optimized for security, performance, and SEO
+
+# Enable URL rewriting
+RewriteEngine On
+
+# =====================================================
+# 1. HTTPS ENFORCEMENT & WWW REDIRECT
+# =====================================================
+
+# Force HTTPS and remove www in one step
+# Redirect: http://www.jaramie.com → https://jaramie.com
+# Redirect: http://jaramie.com → https://jaramie.com  
+# Redirect: https://www.jaramie.com → https://jaramie.com
+
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+# Alternative method (uncomment if above doesn't work):
+# RewriteCond %{HTTP_HOST} ^www\.jaramie\.com$ [NC]
+# RewriteRule ^(.*)$ https://jaramie.com/$1 [R=301,L]
+# 
+# RewriteCond %{HTTPS} !=on
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# =====================================================
+# 2. SECURITY HEADERS (Cybersecurity Best Practices)
+# =====================================================
+
+<IfModule mod_headers.c>
+    # Strict Transport Security (HSTS) - Force HTTPS for 1 year
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+    
+    # Prevent clickjacking attacks
+    Header always set X-Frame-Options "DENY"
+    
+    # Prevent MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Enable XSS protection
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Referrer Policy - Control referrer information
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Content Security Policy - Prevent XSS and data injection
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+    
+    # Permissions Policy (formerly Feature Policy)
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(self), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), ambient-light-sensor=(), autoplay=()"
+    
+    # Remove server signature
+    Header always unset Server
+    Header always unset X-Powered-By
+    
+    # Cache control for security-sensitive pages
+    <FilesMatch "\.(html|htm|php)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+</IfModule>
+
+# =====================================================
+# 3. PERFORMANCE OPTIMIZATION
+# =====================================================
+
+# Enable GZIP compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript
+    AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE application/xml application/xhtml+xml application/rss+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Browser caching for static assets
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Images and media
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/ico "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    
+    # CSS and JavaScript
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    
+    # Fonts
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    
+    # HTML (shorter cache for content updates)
+    ExpiresByType text/html "access plus 1 week"
+</IfModule>
+
+# =====================================================
+# 4. SEO & CLEAN URLs
+# =====================================================
+
+# Remove .html extension from URLs
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.html [NC,L]
+
+# Redirect .html URLs to clean URLs
+RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
+RewriteRule ^ /%1? [NC,L,R=301]
+
+# Handle trailing slashes consistently
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [R=301,L]
+
+# =====================================================
+# 5. SECURITY HARDENING
+# =====================================================
+
+# Disable server signature
+ServerTokens Prod
+ServerSignature Off
+
+# Prevent access to sensitive files
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Protect configuration files
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|sql|conf|config|bak|backup|swp|tmp)$">
+    Require all denied
+</FilesMatch>
+
+# Disable directory browsing
+Options -Indexes
+
+# Block suspicious user agents and requests
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP_USER_AGENT} (libwww-perl|wget|python|nikto|curl|scan|java|winhttp|clshttp|loader) [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} (<|>|'|%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} (;|<|>|'|"|\)|\(|%0A|%0D|%22|%27|%28|%3C|%3E|%00).*(libwww-perl|wget|python|nikto|curl|scan|java|winhttp|HTTrack|clshttp|archiver|loader|email|harvest|extract|grab|miner) [NC,OR]
+    RewriteCond %{THE_REQUEST} (\?|\*|%2a)+(%20+|\\s+|%20+\\s+|\\s+%20+|\\s+%20+\\s+)(http|https) [NC]
+    RewriteRule .* - [F]
+</IfModule>
+
+# Prevent hotlinking (adjust domain as needed)
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^https://jaramie\.com [NC]
+RewriteCond %{HTTP_REFERER} !^https://www\.jaramie\.com [NC]
+RewriteCond %{REQUEST_URI} \.(gif|jpe?g|png|svg|webp)$ [NC]
+RewriteRule .* - [F]
+
+# =====================================================
+# 6. ERROR HANDLING
+# =====================================================
+
+# Custom error pages
+ErrorDocument 400 /error/400.html
+ErrorDocument 401 /error/401.html
+ErrorDocument 403 /error/403.html
+ErrorDocument 404 /error/404.html
+ErrorDocument 500 /error/500.html
+
+# =====================================================
+# 7. ADDITIONAL SECURITY MEASURES
+# =====================================================
+
+# Disable XML-RPC (if using WordPress)
+<Files xmlrpc.php>
+    Require all denied
+</Files>
+
+# Limit file upload size (adjust as needed)
+LimitRequestBody 10485760  # 10MB
+
+# Disable HTTP methods that aren't needed
+<LimitExcept GET POST HEAD>
+    Require all denied
+</LimitExcept>
+
+---
+
+# =====================================================
+# NETLIFY _redirects Configuration
+# =====================================================
+# Place this file in your site's publish directory (e.g., dist/_redirects)
+# No file extension needed - just name it "_redirects"
+
+# Force HTTPS and remove www
+https://www.jaramie.com/*  https://jaramie.com/:splat  301!
+http://www.jaramie.com/*   https://jaramie.com/:splat  301!
+http://jaramie.com/*       https://jaramie.com/:splat  301!
+
+# Alternative domain redirects (if you have multiple domains)
+# https://jaramie.dev/*      https://jaramie.com/:splat  301!
+# https://www.jaramie.dev/*  https://jaramie.com/:splat  301!
+
+# Clean URL redirects (remove .html extension)
+/about.html     /about      301!
+/services.html  /services   301!
+/portfolio.html /portfolio  301!
+/blog.html      /blog       301!
+/contact.html   /contact    301!
+
+# Handle trailing slashes consistently
+/about/         /about      301!
+/services/      /services   301!
+/portfolio/     /portfolio  301!
+/blog/          /blog       301!
+/contact/       /contact    301!
+
+# Blog post redirects (if migrating from another platform)
+/blog/post/*    /blog/:splat  301!
+/posts/*        /blog/:splat  301!
+
+# Legacy page redirects
+/home           /             301!
+/index.html     /             301!
+
+# Social media and external links
+/linkedin       https://linkedin.com/in/jaramie  302
+/github         https://github.com/jaramie       302
+/twitter        https://twitter.com/jaramie      302
+
+# Download links for resources
+/resume         /downloads/jaramie-cybersecurity-resume.pdf  302
+/cv             /downloads/jaramie-cybersecurity-resume.pdf  302
+
+# API endpoint proxying (if needed)
+/api/*          https://your-api.com/api/:splat  200
+
+# Catch-all for SPA routing (if using client-side routing)
+/*              /index.html  200
+
+---
+
+# =====================================================
+# NETLIFY netlify.toml Configuration (Advanced)
+# =====================================================
+# Place this file in your repository root
+
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # HSTS
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    
+    # Prevent clickjacking
+    X-Frame-Options = "DENY"
+    
+    # Prevent MIME sniffing
+    X-Content-Type-Options = "nosniff"
+    
+    # XSS Protection
+    X-XSS-Protection = "1; mode=block"
+    
+    # Referrer Policy
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Content Security Policy
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      connect-src 'self' https:;
+      frame-ancestors 'none';
+      base-uri 'self';
+      form-action 'self';
+    """
+    
+    # Permissions Policy
+    Permissions-Policy = """
+      camera=(),
+      microphone=(),
+      geolocation=(self),
+      payment=(),
+      usb=(),
+      magnetometer=(),
+      gyroscope=(),
+      accelerometer=(),
+      ambient-light-sensor=(),
+      autoplay=()
+    """
+
+# Cache headers for static assets
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"  # 30 days
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"  # 30 days
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"  # 1 year
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"  # 1 year
+
+[[headers]]
+  for = "*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"  # 1 year
+
+# HTML caching (shorter for content updates)
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"  # 1 week
+
+# Disable caching for dynamic content
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# =====================================================
+# VERCEL vercel.json Configuration
+# =====================================================
+{
+  "redirects": [
+    {
+      "source": "https://www.jaramie.com/(.*)",
+      "destination": "https://jaramie.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/about.html",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/services.html", 
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/portfolio.html",
+      "destination": "/portfolio", 
+      "permanent": true
+    },
+    {
+      "source": "/blog.html",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/contact.html",
+      "destination": "/contact",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
+        },
+        {
+          "key": "X-Frame-Options", 
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,421 @@
+# .github/workflows/deploy.yml
+name: 🚀 Deploy Cybersecurity Portfolio
+
+on:
+  push:
+    branches:
+      - main
+      - develop  # Optional: deploy staging from develop branch
+  pull_request:
+    branches:
+      - main
+
+env:
+  NODE_VERSION: '18'
+  BUILD_DIRECTORY: './dist'  # Adjust based on your build output
+
+jobs:
+  # Job 1: Build and Test
+  build-and-test:
+    name: 🔨 Build & Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better caching
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'  # Cache npm dependencies
+
+      - name: 📋 Install Dependencies
+        run: |
+          npm ci --prefer-offline --no-audit
+          echo "✅ Dependencies installed successfully"
+
+      - name: 🔍 Run Security Audit
+        run: |
+          npm audit --audit-level high
+          echo "🔒 Security audit completed"
+        continue-on-error: true  # Don't fail build on audit issues
+
+      - name: 🧪 Run Tests (if any)
+        run: |
+          if [ -f "package.json" ] && grep -q '"test"' package.json; then
+            npm test
+            echo "✅ Tests completed successfully"
+          else
+            echo "⚠️ No tests found, skipping..."
+          fi
+        continue-on-error: true
+
+      - name: 🏗️ Build Site
+        run: |
+          npm run build
+          echo "🎯 Build completed successfully"
+        env:
+          NODE_ENV: production
+          CI: true
+
+      - name: 🔍 Validate Build Output
+        run: |
+          if [ ! -d "${{ env.BUILD_DIRECTORY }}" ]; then
+            echo "❌ Build directory not found!"
+            exit 1
+          fi
+          
+          echo "📊 Build output summary:"
+          du -sh ${{ env.BUILD_DIRECTORY }}
+          find ${{ env.BUILD_DIRECTORY }} -name "*.html" | wc -l | xargs echo "HTML files:"
+          find ${{ env.BUILD_DIRECTORY }} -name "*.css" | wc -l | xargs echo "CSS files:"
+          find ${{ env.BUILD_DIRECTORY }} -name "*.js" | wc -l | xargs echo "JS files:"
+          echo "✅ Build validation completed"
+
+      - name: 💾 Cache Build Artifacts
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.BUILD_DIRECTORY }}
+          key: build-${{ github.sha }}
+          restore-keys: |
+            build-${{ github.ref_name }}-
+            build-
+
+      - name: 📤 Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cybersecurity-portfolio-build
+          path: ${{ env.BUILD_DIRECTORY }}
+          retention-days: 7
+
+  # Job 2: Deploy to Vercel (Production)
+  deploy-vercel:
+    name: 🚀 Deploy to Vercel
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    environment:
+      name: vercel-production
+      url: ${{ steps.vercel-deploy.outputs.url }}
+
+    steps:
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 📥 Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: cybersecurity-portfolio-build
+          path: ${{ env.BUILD_DIRECTORY }}
+
+      - name: 🔧 Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: 🚀 Deploy to Vercel
+        id: vercel-deploy
+        run: |
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          VERCEL_URL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$VERCEL_URL" >> $GITHUB_OUTPUT
+          echo "🎉 Deployed to Vercel: $VERCEL_URL"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: 💬 Comment Deployment URL
+        uses: actions/github-script@v7
+        if: github.event_name == 'push'
+        with:
+          script: |
+            const deploymentUrl = '${{ steps.vercel-deploy.outputs.url }}';
+            const comment = `🚀 **Vercel Deployment Successful!**
+            
+            **🔗 Live URL:** ${deploymentUrl}
+            **📋 Commit:** \`${{ github.sha }}\`
+            **🕒 Deployed:** ${new Date().toISOString()}
+            
+            ✅ Your cybersecurity portfolio is now live!`;
+            
+            // Create deployment status
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: context.payload.deployment?.id,
+              state: 'success',
+              environment_url: deploymentUrl,
+              description: 'Deployment successful'
+            });
+
+  # Job 3: Deploy to Netlify (Alternative/Backup)
+  deploy-netlify:
+    name: 🌐 Deploy to Netlify
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    environment:
+      name: netlify-production
+      url: ${{ steps.netlify-deploy.outputs.url }}
+
+    steps:
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 📥 Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: cybersecurity-portfolio-build
+          path: ${{ env.BUILD_DIRECTORY }}
+
+      - name: 🚀 Deploy to Netlify
+        id: netlify-deploy
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=${{ env.BUILD_DIRECTORY }} --prod
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: 📝 Get Netlify URL
+        id: netlify-url
+        run: |
+          # Netlify CLI doesn't always output URL consistently, so we construct it
+          NETLIFY_URL="https://${{ secrets.NETLIFY_SITE_ID }}.netlify.app"
+          echo "url=$NETLIFY_URL" >> $GITHUB_OUTPUT
+          echo "🎉 Deployed to Netlify: $NETLIFY_URL"
+
+  # Job 4: Staging Deployment (Optional)
+  deploy-staging:
+    name: 🧪 Deploy Staging
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    
+    environment:
+      name: staging
+      url: ${{ steps.staging-deploy.outputs.url }}
+
+    steps:
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 📥 Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: cybersecurity-portfolio-build
+          path: ${{ env.BUILD_DIRECTORY }}
+
+      - name: 🧪 Deploy to Vercel (Staging)
+        id: staging-deploy
+        run: |
+          npm install --global vercel@latest
+          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --token=${{ secrets.VERCEL_TOKEN }}
+          STAGING_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$STAGING_URL" >> $GITHUB_OUTPUT
+          echo "🧪 Staging deployed: $STAGING_URL"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  # Job 5: Performance & Security Checks (Post-Deployment)
+  post-deployment-checks:
+    name: 🔍 Post-Deployment Checks
+    needs: [deploy-vercel]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: 🔍 Install Lighthouse CLI
+        run: npm install -g @lhci/cli@0.12.x
+
+      - name: 🚨 Run Lighthouse Audit
+        run: |
+          SITE_URL="${{ needs.deploy-vercel.outputs.url || 'https://your-site.vercel.app' }}"
+          echo "🔍 Running Lighthouse audit on: $SITE_URL"
+          
+          lhci autorun \
+            --upload.target=temporary-public-storage \
+            --collect.url="$SITE_URL" \
+            --collect.numberOfRuns=3 \
+            --assert.assertions.categories.performance=0.8 \
+            --assert.assertions.categories.accessibility=0.9 \
+            --assert.assertions.categories.best-practices=0.8 \
+            --assert.assertions.categories.seo=0.8
+        continue-on-error: true
+
+      - name: 🔒 Security Headers Check
+        run: |
+          SITE_URL="${{ needs.deploy-vercel.outputs.url || 'https://your-site.vercel.app' }}"
+          echo "🔒 Checking security headers for: $SITE_URL"
+          
+          # Check for essential security headers
+          curl -I "$SITE_URL" | grep -E "(X-Frame-Options|X-Content-Type-Options|Strict-Transport-Security|Content-Security-Policy)" || echo "⚠️ Some security headers missing"
+          
+          echo "✅ Security headers check completed"
+        continue-on-error: true
+
+  # Job 6: Notification (Success/Failure)
+  notification:
+    name: 📢 Send Notification
+    needs: [deploy-vercel, deploy-netlify, post-deployment-checks]
+    runs-on: ubuntu-latest
+    if: always() && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: 📢 Deployment Summary
+        run: |
+          echo "🎯 Deployment Summary for commit ${{ github.sha }}"
+          echo "📅 Timestamp: $(date)"
+          echo "👤 Triggered by: ${{ github.actor }}"
+          echo "🔗 Commit URL: ${{ github.event.head_commit.url }}"
+          echo "📝 Commit message: ${{ github.event.head_commit.message }}"
+          
+          if [[ "${{ needs.deploy-vercel.result }}" == "success" ]]; then
+            echo "✅ Vercel deployment: SUCCESS"
+          else
+            echo "❌ Vercel deployment: FAILED"
+          fi
+          
+          if [[ "${{ needs.deploy-netlify.result }}" == "success" ]]; then
+            echo "✅ Netlify deployment: SUCCESS"
+          else
+            echo "❌ Netlify deployment: FAILED"
+          fi
+
+      # Optional: Slack notification (uncomment and configure if needed)
+      # - name: 📱 Slack Notification
+      #   uses: 8398a7/action-slack@v3
+      #   with:
+      #     status: ${{ job.status }}
+      #     channel: '#deployments'
+      #     text: |
+      #       🚀 Cybersecurity Portfolio Deployed!
+      #       Status: ${{ job.status }}
+      #       URL: ${{ needs.deploy-vercel.outputs.url }}
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+      #   if: always()
+
+---
+
+# Required GitHub Secrets Setup Guide
+
+# For Vercel Deployment:
+# 1. Go to GitHub Repository → Settings → Secrets and variables → Actions
+# 2. Add these secrets:
+
+# VERCEL_TOKEN:
+# - Go to Vercel Dashboard → Settings → Tokens
+# - Create new token with appropriate scopes
+# - Copy token value
+
+# VERCEL_ORG_ID:
+# - Found in Vercel project settings
+# - Or run: vercel project ls
+
+# VERCEL_PROJECT_ID:
+# - Found in Vercel project settings
+# - Or in .vercel/project.json after linking project
+
+# For Netlify Deployment:
+# NETLIFY_AUTH_TOKEN:
+# - Go to Netlify → User Settings → Applications → Personal access tokens
+# - Create new token
+
+# NETLIFY_SITE_ID:
+# - Found in Netlify site settings
+# - Or in netlify.toml file
+
+# Optional Secrets:
+# SLACK_WEBHOOK: For Slack notifications (if enabled)
+
+---
+
+# Package.json Scripts (Add these to your package.json):
+{
+  "scripts": {
+    "build": "npm run build:css && npm run build:html && npm run optimize",
+    "build:css": "postcss src/css/main.css -o dist/css/main.css",
+    "build:html": "html-minifier --collapse-whitespace --remove-comments --input-dir src --output-dir dist --file-ext html",
+    "optimize": "imagemin 'src/images/**/*.{jpg,png,svg}' --out-dir=dist/images",
+    "dev": "npm run build && serve dist",
+    "test": "echo 'Add your tests here' && exit 0"
+  }
+}
+
+---
+
+# Vercel Configuration (vercel.json):
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "dist/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/dist/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https:;"
+        }
+      ]
+    }
+  ]
+}
+
+---
+
+# Netlify Configuration (_redirects):
+# Place in your dist folder
+/*    /index.html   200
+
+# netlify.toml (optional advanced config):
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
