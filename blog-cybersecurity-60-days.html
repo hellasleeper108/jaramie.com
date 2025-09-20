@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>How I Taught Myself Cybersecurity in 60 Days | Jaramie</title>
+  <meta name="description" content="Practical daily habits and resources that got me from zero to cybersecurity-ready in just 60 days. No expensive courses required." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1320;
+      --text:#f7fafc;
+      --muted:#a3b2bf;
+      --accent:#00d1ff;
+      --accent-2:#ffb86b;
+      --radius:12px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+    .wrap{max-width:800px;margin:0 auto;padding:32px}
+    header{margin-bottom:40px}
+    .back-link{color:var(--accent);text-decoration:none;font-weight:600;margin-bottom:20px;display:inline-block}
+    .back-link:hover{text-decoration:underline}
+    h1{font-size:36px;margin:0 0 16px;background:linear-gradient(270deg, var(--accent), var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .meta{color:var(--muted);margin-bottom:32px;font-size:14px}
+    .content{line-height:1.7}
+    .content h2{color:var(--accent);margin:32px 0 16px}
+    .content h3{margin:24px 0 12px}
+    .content ul{margin:16px 0;padding-left:20px}
+    .content li{margin:8px 0}
+    .content strong{color:var(--accent-2)}
+    .highlight{background:var(--card);padding:16px;border-radius:var(--radius);border-left:4px solid var(--accent);margin:20px 0}
+    footer{margin-top:60px;padding:20px;text-align:center;color:var(--muted);font-size:14px;border-top:1px solid rgba(255,255,255,0.1)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a href="index.html" class="back-link">← Back to Portfolio</a>
+      <h1>How I Taught Myself Cybersecurity in 60 Days</h1>
+      <div class="meta">Published January 2025 • 8 min read</div>
+    </header>
+
+    <article class="content">
+      <div class="highlight">
+        <strong>TL;DR:</strong> With focused self-study and the right resources, you can build solid cybersecurity fundamentals in 60 days. Here's exactly how I did it.
+      </div>
+
+      <p>The cybersecurity skills gap represents <strong>3.5 million unfilled positions globally</strong>. After 20+ years in IT troubleshooting, I decided to make the leap into cybersecurity. What I discovered surprised me: with focused self-study, you can build job-ready fundamentals in just 60 days.</p>
+
+      <h2>Week 1-2: Foundation Building</h2>
+      <p>You can't secure what you don't understand. I started with networking fundamentals:</p>
+      <ul>
+        <li><strong>TCP/IP and OSI model</strong> - How data actually moves across networks</li>
+        <li><strong>Subnetting</strong> - Critical for network segmentation</li>
+        <li><strong>Command line mastery</strong> - Both Windows and Linux terminals</li>
+        <li><strong>Home lab setup</strong> - VirtualBox with multiple VMs</li>
+      </ul>
+      <p><strong>Key resource:</strong> Professor Messer's free Network+ course gave me the foundation without expensive bootcamps.</p>
+
+      <h2>Week 3-4: Core Security Concepts</h2>
+      <p>This is where cybersecurity gets real. Focus on understanding threats before learning tools:</p>
+      <ul>
+        <li><strong>CIA Triad</strong> - Confidentiality, Integrity, Availability in practice</li>
+        <li><strong>OWASP Top 10</strong> - The most common web application vulnerabilities</li>
+        <li><strong>Attack vectors</strong> - How hackers actually get in</li>
+        <li><strong>First tools</strong> - Nmap for network discovery, Wireshark for packet analysis</li>
+      </ul>
+      <p><strong>Game changer:</strong> TryHackMe's beginner paths made complex concepts click through hands-on practice.</p>
+
+      <h2>Week 5-6: Practical Skills Development</h2>
+      <p>Theory means nothing without practice. This phase was all about getting hands dirty:</p>
+      <ul>
+        <li><strong>Vulnerability scanning</strong> - OpenVAS and Nessus Community Edition</li>
+        <li><strong>Log analysis</strong> - Understanding what normal vs. suspicious looks like</li>
+        <li><strong>Python scripting</strong> - Automating security tasks</li>
+        <li><strong>Incident response basics</strong> - What to do when things go wrong</li>
+      </ul>
+      <p><strong>Pro tip:</strong> Document everything in a GitHub repository. Future employers want to see your thinking process.</p>
+
+      <h2>Week 7-8: Portfolio & Job Prep</h2>
+      <p>The final push focused on showcasing skills and networking:</p>
+      <ul>
+        <li><strong>Portfolio creation</strong> - GitHub with detailed project writeups</li>
+        <li><strong>Community engagement</strong> - Twitter InfoSec community, LinkedIn posts</li>
+        <li><strong>Interview preparation</strong> - Common scenarios and behavioral questions</li>
+        <li><strong>Continued learning plan</strong> - Advanced platforms like Hack The Box</li>
+      </ul>
+
+      <h2>The Daily Habits That Made It Work</h2>
+      <p>Consistency beat intensity every time:</p>
+      <ul>
+        <li><strong>2 hours minimum daily</strong> - 1 hour theory, 1 hour hands-on</li>
+        <li><strong>Morning learning</strong> - Before work when my brain was fresh</li>
+        <li><strong>Weekend projects</strong> - Longer lab sessions and writeups</li>
+        <li><strong>Active note-taking</strong> - Obsidian for connecting concepts</li>
+      </ul>
+
+      <h2>What I Wish I'd Known Earlier</h2>
+      <ul>
+        <li><strong>Start with networking fundamentals</strong> - Everything builds on this</li>
+        <li><strong>Focus on understanding, not tools</strong> - Tools change, concepts don't</li>
+        <li><strong>Join the community early</strong> - InfoSec Twitter is incredibly helpful</li>
+        <li><strong>Practice explaining concepts</strong> - If you can't explain it, you don't understand it</li>
+      </ul>
+
+      <div class="highlight">
+        <p><strong>The bottom line:</strong> 60 days is ambitious but doable with 15-20 hours per week of focused study. The key is building a foundation that lets you learn continuously—because in cybersecurity, you never stop learning.</p>
+      </div>
+
+      <p>Questions about this journey? Hit me up on <a href="#contact" style="color:var(--accent)">my contact form</a> or find me building things at <a href="https://hellasleeper.com" style="color:var(--accent)">hellasleeper.com</a>.</p>
+    </article>
+
+    <footer>
+      © Jaramie 2025 • <a href="index.html" style="color:var(--accent)">Back to Portfolio</a>
+    </footer>
+  </div>
+</body>
+</html>
