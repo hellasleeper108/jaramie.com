@@ -1,450 +1,868 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Jaramie — Software. Security. Hardware.</title>
-  <meta name="description" content="Jaramie — building practical software, security tooling, and kid-friendly STEM kits. Portfolio and contact." />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jaramie — Cybersecurity & AI Engineer</title>
+    <meta name="description" content="Building secure software, AI solutions, and creative hardware. Portfolio of Jaramie - Cybersecurity specialist and AI engineer.">
+    
+    <!-- Modern Font Stack -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Minimalist Cyberpunk Palette */
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #181823;
+            --text-primary: #e8e8f0;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --accent-cyan: #00ffff;
+            --accent-magenta: #ff00ff;
+            --accent-yellow: #ffff00;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --glow-cyan: rgba(0, 255, 255, 0.4);
+            --glow-magenta: rgba(255, 0, 255, 0.3);
+        }
 
-  <style>
-    :root{
-      --bg:#0f1724;
-      --card:#0b1320;
-      --text:#f7fafc;
-      --muted:#a3b2bf;
-      --accent:#00d1ff;
-      --accent-2:#ffb86b;
-      --radius:12px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:'Inter',system-ui,sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-    }
-    .wrap{max-width:1100px;margin:0 auto;padding:32px}
-    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
-    .brand{
-      font-weight:800;font-size:22px;
-      background:linear-gradient(270deg, var(--accent), var(--accent-2), #8b5cf6);
-      background-size:600% 600%;
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      animation:gradientShift 12s ease infinite;
-    }
-    nav a{color:var(--muted);text-decoration:none;margin-left:18px;font-weight:600;transition:color .2s}
-    nav a:hover{color:var(--accent)}
-    section{margin-bottom:60px}
-    h2{margin-bottom:20px}
-    .card{
-      background:var(--card);
-      padding:16px;
-      border-radius:var(--radius);
-      border:1px solid rgba(255,255,255,0.05);
-      transition:all .25s ease;
-    }
-    .card:hover{
-      transform:translateY(-6px);
-      box-shadow:0 10px 30px rgba(0,209,255,.15);
-      border-color:rgba(0,209,255,.4);
-    }
-    /* hero */
-    .hero{display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:center;margin-bottom:40px}
-    .hero h1{font-size:42px;margin:0 0 12px}
-    .hero p{color:var(--muted);margin:0 0 18px}
-    .cta{display:flex;gap:12px}
-    .btn{padding:12px 18px;border-radius:10px;font-weight:700;border:0;cursor:pointer;transition:all .2s ease}
-    .btn-primary{background:linear-gradient(90deg,var(--accent),#00b8e6);color:#061018}
-    .btn-primary:hover{box-shadow:0 0 12px rgba(0,209,255,.8),0 0 20px rgba(0,209,255,.4);transform:scale(1.05)}
-    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.08);color:var(--text)}
-    .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
-    /* projects */
-    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-    /* timeline */
-    .timeline {
-      position: relative;
-      margin: 40px 0;
-      padding-left: 20px;
-      border-left: 2px solid rgba(0,209,255,0.3);
-    }
-    .tl-item {margin-bottom: 32px;position: relative;}
-    .tl-date {
-      position: absolute;
-      left: -85px;
-      color: var(--accent-2);
-      font-weight: 700;
-      font-size: 14px;
-    }
-    .tl-content {
-      background: var(--card);
-      padding: 14px 18px;
-      border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .tl-content h3 { margin: 0 0 6px; font-size: 16px }
-    .tl-content p { margin: 0; color: var(--muted); font-size: 14px }
-    /* skills */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 16px;
-    }
-    .skill {
-      text-align: center;
-      padding: 12px;
-      background: var(--card);
-      border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,0.05);
-      font-weight: 600;
-      color: var(--muted);
-      transition: transform .2s ease, border-color .2s ease;
-    }
-    .skill:hover {transform: translateY(-4px);border-color: var(--accent);color: var(--accent);}
-    /* testimonials */
-    .testimonials {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-    .testimonial {
-      background: var(--card);
-      padding: 18px;
-      border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,0.06);
-      font-size: 15px;
-      line-height: 1.5;
-    }
-    .testimonial p { margin: 0 0 12px; }
-    .testimonial footer {font-size: 13px;color: var(--muted);font-style: italic;}
-    /* animations */
-    @keyframes gradientShift{
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-    }
-    .fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
-    .fade-in.visible{opacity:1;transform:translateY(0)}
-    footer{padding:20px;text-align:center;color:var(--muted);font-size:14px}
-  </style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Subtle Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header */
+        header {
+            padding: 2rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-subtle);
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent-cyan);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 100px;
+            position: relative;
+        }
+
+        .hero-content {
+            width: 100%;
+        }
+
+        .hero-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--text-primary), var(--accent-cyan), var(--accent-magenta));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 3s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            border: 1px solid var(--accent-cyan);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--accent-cyan);
+            box-shadow: 0 0 20px var(--glow-cyan);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-magenta);
+            color: var(--accent-magenta);
+            box-shadow: 0 0 20px var(--glow-magenta);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+        }
+
+        /* Project Grid */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta));
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.1);
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .project-tech {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Skills Section */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .skill-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            padding: 1rem;
+            text-align: center;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .skill-item:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin-top: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent-cyan), var(--accent-magenta));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 20px var(--glow-cyan);
+        }
+
+        .timeline-date {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-magenta);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .timeline-description {
+            color: var(--text-secondary);
+        }
+
+        /* Contact Section */
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-link:hover {
+            color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links.mobile-active {
+                display: flex;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 15, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 2rem;
+                border-bottom: 1px solid var(--border-subtle);
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .timeline {
+                padding-left: 1.5rem;
+            }
+
+            .timeline-item::before {
+                left: -2rem;
+            }
+
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-delay {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease 0.3s forwards;
+        }
+
+        /* Glitch Effect for Fun */
+        .glitch {
+            position: relative;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        .glitch:hover::before {
+            animation: glitch-1 0.3s ease infinite;
+            color: var(--accent-cyan);
+            opacity: 0.8;
+        }
+
+        .glitch:hover::after {
+            animation: glitch-2 0.3s ease infinite;
+            color: var(--accent-magenta);
+            opacity: 0.8;
+        }
+
+        @keyframes glitch-1 {
+            0% { clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%); transform: translateX(-2px); }
+            50% { clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%); transform: translateX(2px); }
+            100% { clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%); transform: translateX(-2px); }
+        }
+
+        @keyframes glitch-2 {
+            0% { clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%); transform: translateX(2px); }
+            50% { clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%); transform: translateX(-2px); }
+            100% { clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%); transform: translateX(2px); }
+        }
+    </style>
 </head>
 <body>
-  <div class="wrap">
+    <!-- Header -->
     <header>
-      <div class="brand">
-        <svg viewBox="0 0 400 80" xmlns="http://www.w3.org/2000/svg" style="height: 40px; width: auto;">
-          <defs>
-            <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-            <filter id="subtleGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          <rect width="400" height="80" fill="none"/>
-          <g font-family="Arial, sans-serif" font-weight="300" font-size="32" fill="#ffffff">
-            <g transform="translate(20, 50)">
-              <path d="M 0 -30 L 0 5 Q 0 15 -10 15 Q -20 15 -20 5"
-                    stroke="#ffffff"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"/>
-              <circle cx="0" cy="-30" r="2" fill="#00d1ff" filter="url(#neonGlow)"/>
-            </g>
-            <g transform="translate(60, 50)">
-              <path d="M -12 15 L 0 -25 L 12 15 M -8 0 L 8 0"
-                    stroke="#ffffff"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </g>
-            <g transform="translate(100, 50)">
-              <path d="M -10 15 L -10 -25 L 5 -25 Q 10 -25 10 -15 Q 10 -5 5 -5 L -10 -5 M 2 -5 L 10 15"
-                    stroke="#00d1ff"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    filter="url(#neonGlow)"/>
-            </g>
-            <g transform="translate(140, 50)">
-              <path d="M -12 15 L 0 -25 L 12 15 M -8 0 L 8 0"
-                    stroke="#ffffff"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </g>
-            <g transform="translate(190, 50)">
-              <path d="M -15 15 L -15 -25 L 0 -5 L 15 -25 L 15 15"
-                    stroke="#ffffff"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <circle cx="0" cy="-5" r="1.5" fill="#00d1ff" filter="url(#neonGlow)"/>
-            </g>
-            <g transform="translate(230, 50)">
-              <line x1="0" y1="-25" x2="0" y2="15"
-                    stroke="#ffffff"
-                    stroke-width="2.5"
-                    stroke-linecap="round"/>
-              <circle cx="0" cy="-30" r="2" fill="#00d1ff" filter="url(#neonGlow)"/>
-            </g>
-            <g transform="translate(270, 50)">
-              <path d="M -8 15 L -8 -25 L 10 -25 M -8 -5 L 6 -5 M -8 15 L 10 15"
-                    stroke="#00d1ff"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    filter="url(#subtleGlow)"/>
-            </g>
-          </g>
-          <line x1="20" y1="65" x2="285" y2="65"
-                stroke="#00d1ff"
-                stroke-width="1"
-                opacity="0.6"/>
-          <g stroke="#00d1ff" stroke-width="1.5" fill="none" opacity="0.8">
-            <path d="M 15 20 L 15 15 L 20 15"/>
-            <path d="M 385 15 L 390 15 L 390 20"/>
-            <path d="M 20 65 L 15 65 L 15 60"/>
-            <path d="M 390 60 L 390 65 L 385 65"/>
-          </g>
-        </svg>
-      </div>
-      <nav>
-        <a href="#projects">Projects</a>
-        <a href="#journey">Journey</a>
-        <a href="#blog">Blog</a>
-        <a href="#skills">Skills</a>
-        <a href="#testimonials">Testimonials</a>
-        <a href="#contact">Contact</a>
-      </nav>
+        <nav class="container">
+            <a href="#" class="logo glitch" data-text="JARAMIE">JARAMIE</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#journey">Journey</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        </nav>
     </header>
 
-    <main>
-      <!-- HERO -->
-      <section class="hero fade-in">
-        <div>
-          <h1>Software. Security. Scrappy Hardware.</h1>
-          <p>I build tools, teach curious minds, and prototype weird hardware. Current focus: AI & Cybersecurity projects, 3D-printed curiosities, and STEM kits that actually work.</p>
-          <div class="cta">
-            <a class="btn btn-primary" href="#projects">View Projects</a>
-            <a class="btn btn-ghost" href="#contact">Work With Me</a>
-          </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <p class="hero-tag fade-in">&lt;cybersecurity_engineer&gt;</p>
+                <h1 class="fade-in">
+                    Building <span class="gradient-text">secure systems</span><br>
+                    for the digital frontier
+                </h1>
+                <p class="hero-description fade-in-delay">
+                    Cybersecurity specialist and AI engineer crafting robust security solutions, 
+                    intelligent systems, and creative hardware prototypes.
+                </p>
+                <div class="cta-buttons fade-in-delay">
+                    <a href="#projects" class="btn btn-primary">View Projects</a>
+                    <a href="#contact" class="btn btn-secondary">Let's Connect</a>
+                </div>
+            </div>
         </div>
-        <aside class="card">
-          <strong>Latest</strong>
-          <p style="color:var(--muted)">PQC optimizer prototype • 3D-printed mechanical computer demo</p>
-        </aside>
-      </section>
+    </section>
 
-      <!-- PROJECTS -->
-      <section id="projects" class="fade-in">
-        <h2>Featured Projects</h2>
-        <div class="projects-grid">
-          <div class="card"><h3>PQC Optimizer</h3><p>Prototype optimizer for post-quantum crypto parameters.</p></div>
-          <div class="card"><h3>3D-Printed Computer</h3><p>A clunky but delightful computing machine for classrooms.</p></div>
-          <div class="card"><h3>Email Sandbox</h3><p>Secure analysis environment for phishing/malware emails.</p></div>
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Projects</h2>
+                <p class="section-subtitle">Security tools and creative experiments</p>
+            </div>
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3 class="project-title">PQC Optimizer</h3>
+                    <p class="project-tech">// Quantum Cryptography • Python</p>
+                    <p class="project-description">
+                        Advanced prototype optimizer for post-quantum cryptographic parameters, preparing 
+                        systems for quantum-resistant security.
+                    </p>
+                </div>
+                <div class="project-card">
+                    <h3 class="project-title">Email Sandbox</h3>
+                    <p class="project-tech">// Security • Malware Analysis</p>
+                    <p class="project-description">
+                        Secure isolated environment for analyzing phishing emails and malware samples 
+                        with automated threat detection.
+                    </p>
+                </div>
+                <div class="project-card">
+                    <h3 class="project-title">3D Mechanical Computer</h3>
+                    <p class="project-tech">// Hardware • Education</p>
+                    <p class="project-description">
+                        Fully 3D-printed mechanical computing machine designed for hands-on STEM education 
+                        in classrooms.
+                    </p>
+                </div>
+                <div class="project-card">
+                    <h3 class="project-title">AI Threat Detector</h3>
+                    <p class="project-tech">// Machine Learning • Security</p>
+                    <p class="project-description">
+                        ML-powered system for real-time threat detection and anomaly identification in 
+                        network traffic patterns.
+                    </p>
+                </div>
+                <div class="project-card">
+                    <h3 class="project-title">CTF Automation Suite</h3>
+                    <p class="project-tech">// Python • Penetration Testing</p>
+                    <p class="project-description">
+                        Comprehensive toolkit for automating common CTF challenges and vulnerability 
+                        discovery workflows.
+                    </p>
+                </div>
+                <div class="project-card">
+                    <h3 class="project-title">STEM Kit Platform</h3>
+                    <p class="project-tech">// Hardware • React • Node.js</p>
+                    <p class="project-description">
+                        E-learning platform with affordable DIY STEM kits, making technology education 
+                        accessible to all.
+                    </p>
+                </div>
+            </div>
         </div>
-      </section>
+    </section>
 
-      <!-- TIMELINE -->
-      <section id="journey" class="fade-in">
-        <h2>My Journey</h2>
-        <div class="timeline">
-          <div class="tl-item"><span class="tl-date">1999</span><div class="tl-content"><h3>Console Modding</h3><p>Started hacking and soldering gaming consoles — early proof that curiosity beats manuals.</p></div></div>
-          <div class="tl-item"><span class="tl-date">2005–2020</span><div class="tl-content"><h3>Troubleshooter</h3><p>20+ years diagnosing Windows, networking, and hardware nightmares most people gave up on.</p></div></div>
-          <div class="tl-item"><span class="tl-date">2024</span><div class="tl-content"><h3>Cybersecurity Training</h3><p>Dove head-first into TryHackMe, daily labs, and red/blue team fundamentals.</p></div></div>
-          <div class="tl-item"><span class="tl-date">2025</span><div class="tl-content"><h3>AI Engineering Degree</h3><p>Currently enrolled in AAS in AI Engineering, blending software with security research.</p></div></div>
+    <!-- Journey Section -->
+
+    <!-- Blog Section -->
+    <section id="blog">
+        <div class="container">
+            <div class="section-header">
+                <h2>Latest Writing</h2>
+                <p class="section-subtitle">Learning in public, one project at a time</p>
+            </div>
+            <div class="project-grid">
+                <div class="project-card" style="border-color: var(--accent-cyan); position: relative;">
+                    <span style="position: absolute; top: 10px; right: 10px; background: var(--accent-cyan); color: var(--bg-primary); padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700;">NEW • DAY 1</span>
+                    <h3 class="project-title">100 Python Projects in 30 Days</h3>
+                    <p class="project-tech">// Learning • AI-Assisted • Daily Updates</p>
+                    <p class="project-description">
+                        Building 100 projects in 30 days using AI as a teaching assistant, not a shortcut. 
+                        Day 1: 6 projects down, 94 to go. Updated daily with honest insights.
+                    </p>
+                    <a href="blog-100-python-projects.html" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600; margin-top: 12px; display: inline-block;">Read Day 1 →</a>
+                </div>
+                <div class="project-card">
+                    <h3 class="project-title">Cybersecurity in 60 Days</h3>
+                    <p class="project-tech">// Career • Self-Study • January 2025</p>
+                    <p class="project-description">
+                        From IT troubleshooting to cybersecurity fundamentals in 8 weeks. The practical daily 
+                        habits that made it work without expensive bootcamps.
+                    </p>
+                    <a href="blog-cybersecurity-60-days.html" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600; margin-top: 12px; display: inline-block;">Read More →</a>
+                </div>
+                <div class="project-card">
+                    <h3 class="project-title">Designing a $2 STEM Kit</h3>
+                    <p class="project-tech">// Product Design • Education • January 2025</p>
+                    <p class="project-description">
+                        Creating educational kits that look premium at budget prices. Smart design beats 
+                        expensive materials when you understand psychology.
+                    </p>
+                    <a href="blog-stem-kit-design.html" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600; margin-top: 12px; display: inline-block;">Read More →</a>
+                </div>
+            </div>
         </div>
-      </section>
-
-      <!-- BLOG -->
-      <section id="blog" class="fade-in">
-        <h2>Latest Posts</h2>
-        <div class="projects-grid">
-          <a href="blog-cybersecurity-60-days.html" class="card" style="text-decoration: none; color: inherit;">
-            <h3>How I Taught Myself Cybersecurity in 60 Days</h3>
-            <p>Practical daily habits that stuck. From networking fundamentals to job-ready skills in 8 weeks.</p>
-            <small style="color: var(--muted);">January 2025 • 8 min read</small>
-          </a>
-          <a href="blog-stem-kit-design.html" class="card" style="text-decoration: none; color: inherit;">
-            <h3>Designing a $2 STEM Kit</h3>
-            <p>Cheap but effective kit packaging that looks premium. Smart design beats expensive materials.</p>
-            <small style="color: var(--muted);">January 2025 • 6 min read</small>
-          </a>
+    </section>
+    <section id="journey">
+        <div class="container">
+            <div class="section-header">
+                <h2>Professional Journey</h2>
+                <p class="section-subtitle">Three decades of curiosity-driven learning</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <p class="timeline-date">1995</p>
+                    <h3 class="timeline-title">Access to family PC.</h3>
+                    <p class="timeline-description">
+                        Superpower acquired. Spent hours exploring MS-DOS, early Windows, and basic programming. I may have played a game or two.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-date">1997</p>
+                    <h3 class="timeline-title">First Dial-Up Connection</h3>
+                    <p class="timeline-description">
+                        Given internet access. Research mode activated — and never really stopped.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-date">1999</p>
+                    <h3 class="timeline-title">Console Modding Era</h3>
+                    <p class="timeline-description">
+                        Started hacking and soldering gaming consoles — early proof that curiosity beats manuals.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-date">2000+</p>
+                    <h3 class="timeline-title">Unpaid Tech Intern</h3>
+                    <p class="timeline-description">
+                        Became the official (unpaid) IT department for friends and family. Built a reputation one rescue at a time.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-date">2005</p>
+                    <h3 class="timeline-title">First Custom Build</h3>
+                    <p class="timeline-description">
+                        Built my first PC with graduation money. Every component hand-picked, every cable managed.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-date">2009</p>
+                    <h3 class="timeline-title">Hurricane Ike Relief</h3>
+                    <p class="timeline-description">
+                        Volunteered with Comcast restoring communications after Hurricane Ike hit Houston. Learned how to rewire the world under pressure.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-date">2000–2020</p>
+                    <h3 class="timeline-title">The Troubleshooter Years</h3>
+                    <p class="timeline-description">
+                        20+ years diagnosing Windows, networking, and hardware nightmares most people gave up on.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-date">2024</p>
+                    <h3 class="timeline-title">Cybersecurity Deep Dive</h3>
+                    <p class="timeline-description">
+                        Intensive self-study through TryHackMe, KC7, daily labs, and hands-on red/blue team exercises.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-date">2025</p>
+                    <h3 class="timeline-title">AI Engineering Degree</h3>
+                    <p class="timeline-description">
+                        Currently pursuing AAS in AI Engineering, merging security expertise with intelligent systems.
+                    </p>
+                </div>
+            </div>
         </div>
-      </section>
+    </section>
 
-      <!-- SKILLS -->
-      <section id="skills" class="fade-in">
-        <h2>Tools & Tech</h2>
-        <div class="skills-grid">
-          <div class="skill">
-            <svg viewBox="0 0 100 100" style="width: 24px; height: 24px; margin-bottom: 8px;">
-              <circle cx="50" cy="50" r="45" fill="#0b1320" stroke="#00d1ff" stroke-width="2"/>
-              <rect x="30" y="45" width="40" height="30" rx="4" fill="#495057"/>
-              <path d="M 40 45 L 40 35 Q 40 25 50 25 Q 60 25 60 35 L 60 45" stroke="#495057" stroke-width="4" fill="none" stroke-linecap="round"/>
-              <circle cx="50" cy="57" r="3" fill="#00d1ff"/>
-              <rect x="49" y="57" width="2" height="8" fill="#00d1ff"/>
-            </svg>
-            <br>Cybersecurity
-          </div>
-          <div class="skill">
-            <svg viewBox="0 0 100 100" style="width: 24px; height: 24px; margin-bottom: 8px;">
-              <circle cx="50" cy="50" r="45" fill="#0b1320" stroke="#00d1ff" stroke-width="2"/>
-              <path d="M 30 40 Q 25 30 35 25 Q 45 20 55 25 Q 70 22 72 35 Q 75 45 70 55 Q 72 65 65 70 Q 55 75 45 70 Q 35 75 30 65 Q 25 55 30 45 Z" fill="#6c757d"/>
-              <g stroke="#00d1ff" stroke-width="1.5" fill="none">
-                <line x1="35" y1="35" x2="45" y2="35"/>
-                <line x1="40" y1="35" x2="40" y2="30"/>
-                <circle cx="42" cy="40" r="1.5" fill="#00d1ff"/>
-              </g>
-            </svg>
-            <br>AI/ML Models
-          </div>
-          <div class="skill">Python</div>
-          <div class="skill">JavaScript</div>
-          <div class="skill">Linux</div>
-          <div class="skill">Git/GitHub</div>
-          <div class="skill">Networking</div>
-          <div class="skill">Penetration Testing</div>
-          <div class="skill">
-            <svg viewBox="0 0 100 100" style="width: 24px; height: 24px; margin-bottom: 8px;">
-              <circle cx="50" cy="50" r="45" fill="#0b1320" stroke="#00d1ff" stroke-width="2"/>
-              <g fill="#495057">
-                <polygon points="50,20 55,25 50,30 45,25"/>
-                <polygon points="75,45 80,50 75,55 70,50"/>
-                <polygon points="50,80 55,75 50,70 45,75"/>
-                <polygon points="25,55 30,50 25,45 20,50"/>
-                <circle cx="50" cy="50" r="20" fill="#495057"/>
-              </g>
-              <circle cx="50" cy="50" r="8" fill="#00d1ff"/>
-            </svg>
-            <br>3D Printing
-          </div>
-          <div class="skill">Soldering</div>
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="container">
+            <div class="section-header">
+                <h2>Technical Arsenal</h2>
+                <p class="section-subtitle">Tools and technologies I work with</p>
+            </div>
+            <div class="skills-container">
+                <div class="skill-item">Python</div>
+                <div class="skill-item">JavaScript</div>
+                <div class="skill-item">Linux</div>
+                <div class="skill-item">Docker</div>
+                <div class="skill-item">Kubernetes</div>
+                <div class="skill-item">AWS</div>
+                <div class="skill-item">Pen Testing</div>
+                <div class="skill-item">OSINT</div>
+                <div class="skill-item">Wireshark</div>
+                <div class="skill-item">Metasploit</div>
+                <div class="skill-item">Git</div>
+                <div class="skill-item">React</div>
+                <div class="skill-item">Node.js</div>
+                <div class="skill-item">TensorFlow</div>
+                <div class="skill-item">3D Printing</div>
+                <div class="skill-item">Soldering</div>
+            </div>
         </div>
-      </section>
+    </section>
 
-      <!-- TESTIMONIALS -->
-      <section id="testimonials" class="fade-in">
-        <h2>What People Say</h2>
-        <div class="testimonials">
-          <blockquote class="testimonial"><p>“Jaramie  solved problems in a week that had stalled our team for months. He mixes hacker curiosity with practical execution.”</p><footer>— Former Client</footer></blockquote>
-          <blockquote class="testimonial"><p>“I’ve seen his learning curve firsthand: cybersecurity labs, AI projects, 3D printing. Relentless growth and hands-on results.”</p><footer>— Peer, AI Engineering Program</footer></blockquote>
-          <blockquote class="testimonial"><p>“25+ years of troubleshooting, and still the first call when I break something. Also the only person I trust with my soldering iron.”</p><footer>— Longtime Colleague</footer></blockquote>
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="contact-container">
+                <h2>Let's Build Something</h2>
+                <p class="section-subtitle">
+                    Open to collaboration on security research, AI projects, and creative tech ventures.
+                </p>
+                <div class="contact-links">
+                    <a href="mailto:jaramie@jaramie.com" class="contact-link">
+                        <span>📧</span> Email
+                    </a>
+                    <a href="https://github.com/hellasleeper108" class="contact-link">
+                        <span>💻</span> GitHub
+                    </a>
+                    <a href="https://linkedin.com/in/jaramie-morris108" class="contact-link">
+                        <span>🔗</span> LinkedIn
+                    </a>
+                </div>
+            </div>
         </div>
-      </section>
+    </section>
 
-      <!-- CONTACT -->
-      <section id="contact" class="fade-in">
-        <h2>Contact</h2>
-        <div class="card">
-          <form>
-            <label>Name<br><input type="text" style="width:100%;padding:8px;margin-bottom:12px"></label>
-            <label>Email<br><input type="email" style="width:100%;padding:8px;margin-bottom:12px"></label>
-            <label>Message<br><textarea rows="4" style="width:100%;padding:8px"></textarea></label><br>
-            <button class="btn btn-primary" type="submit">Send</button>
-          </form>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2025 Jaramie • Also creating at <a href="https://hellasleeper.com" style="color: var(--accent-cyan);">hellasleeper.com</a></p>
         </div>
-      </section>
-    </main>
-  </div>
+    </footer>
 
-  <!-- TERMINAL FOOTER BANNER -->
-  <div class="terminal-banner" style="margin-top: 60px;">
-    <svg viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
-      <defs>
-        <filter id="neonGlowFooter" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-          <feMerge>
-            <feMergeNode in="coloredBlur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-        <filter id="subtleGlowFooter" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-          <feMerge>
-            <feMergeNode in="coloredBlur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#00ff41" stroke-width="0.3" opacity="0.3"/>
-        </pattern>
-        <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
-          <rect width="4" height="2" fill="#000"/>
-          <rect y="2" width="4" height="2" fill="rgba(0,255,65,0.05)"/>
-        </pattern>
-      </defs>
-      <rect width="800" height="120" fill="#0a0a0a"/>
-      <rect width="800" height="120" fill="url(#grid)" opacity="0.4"/>
-      <rect width="800" height="120" fill="url(#scanlines)"/>
-      <rect x="50" y="20" width="700" height="80" rx="6" fill="#0d1117" stroke="#00ff41" stroke-width="1" opacity="0.9"/>
-      <rect x="50" y="20" width="700" height="25" rx="6" fill="#161b22"/>
-      <rect x="50" y="38" width="700" height="7" fill="#21262d"/>
-      <circle cx="70" cy="32" r="4" fill="#ff5f56"/>
-      <circle cx="90" cy="32" r="4" fill="#ffbd2e"/>
-      <circle cx="110" cy="32" r="4" fill="#27ca3f"/>
-      <text x="400" y="37" font-family="Monaco, 'Courier New', monospace" font-size="12" fill="#7c8b97" text-anchor="middle">root@cybersec:~</text>
-      <rect x="55" y="50" width="690" height="45" fill="#0d1117"/>
-      <g font-family="Monaco, 'Courier New', monospace" font-size="14" fill="#00ff41">
-        <text x="70" y="68" opacity="0.6">user@terminal:~$ whoami</text>
-        <text x="70" y="85" fill="#58a6ff">cybersecurity_enthusiast</text>
-        <text x="70" y="102">root@hackbox:~$ </text>
-        <text x="200" y="102" filter="url(#neonGlowFooter)">_</text>
-      </g>
-      <rect x="198" y="92" width="10" height="2" fill="#00ff41" filter="url(#neonGlowFooter)">
-        <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
-      </rect>
-      <g stroke="#00ff41" stroke-width="2" fill="none" filter="url(#subtleGlowFooter)">
-        <path d="M 20 30 L 15 30 L 15 90 L 20 90"/>
-        <path d="M 25 35 L 22 35 L 22 85 L 25 85"/>
-        <path d="M 780 30 L 785 30 L 785 90 L 780 90"/>
-        <path d="M 775 35 L 778 35 L 778 85 L 775 85"/>
-      </g>
-      <g font-family="Monaco, 'Courier New', monospace" font-size="10" fill="#7c8b97">
-        <text x="60" y="112">ONLINE</text>
-        <circle cx="100" r="2" cy="109" fill="#00ff41" filter="url(#subtleGlowFooter)"/>
-        <text x="680" y="112" text-anchor="end">SECURE</text>
-        <circle cx="740" r="2" cy="109" fill="#00ff41" filter="url(#subtleGlowFooter)"/>
-      </g>
-      <g opacity="0.7">
-        <rect x="0" y="45" width="800" height="1" fill="#ff0080">
-          <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite"/>
-        </rect>
-        <rect x="0" y="75" width="800" height="1" fill="#00ffff">
-          <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite"/>
-        </rect>
-      </g>
-    </svg>
-  </div>
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('mobile-active');
+        }
 
-  <footer>
-    © Jaramie 2025 • Also tinkering at <a href="https://hellasleeper.com" style="color:var(--accent)">hellasleeper.com</a>
-  </footer>
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('mobile-active');
+            });
+        });
 
-  <script>
-    const observer=new IntersectionObserver(entries=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting) e.target.classList.add('visible');
-      });
-    });
-    document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
-  </script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections for fade-in animation
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'all 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
 </body>
 </html>
